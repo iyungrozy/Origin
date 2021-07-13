@@ -1,0 +1,90 @@
+{
+  "name": "cocogoat",
+  "version": "0.4.7",
+  "description": "cocogoat, produces cocomilk.",
+  "author": "月海亭YuehaiTeam",
+  "private": true,
+  "compression": "maximum",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps"
+  },
+  "main": "background.js",
+  "dependencies": {
+    "@mr-quin/mona_to_go": "^1.0.3",
+    "@sentry/electron": "^2.4.0",
+    "@sentry/integrations": "^6.2.5",
+    "@sentry/node": "^6.4.1",
+    "color-diff": "^1.2.0",
+    "context-filter-polyfill": "^0.2.4",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.10.4",
+    "electron-active-window": "^0.0.5",
+    "element-plus": "^1.0.2-beta.36",
+    "extendable-error-class": "^0.1.2",
+    "ffi-napi": "^4.0.3",
+    "flyio": "^0.6.14",
+    "fs-extra": "^9.1.0",
+    "got": "^11.8.2",
+    "hook-std": "^2.0.0",
+    "iohook": "0.9.0",
+    "lodash": "^4.17.21",
+    "marked": "^2.0.2",
+    "queue": "^6.0.2",
+    "ref-napi": "^3.0.2",
+    "ref-struct-napi": "^1.1.1",
+    "ref-union-napi": "^1.0.2",
+    "robotjs": "^0.6.0",
+    "uuid": "^8.3.2",
+    "vigemclient": "^1.2.1",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0",
+    "xss": "^1.0.8"
+  },
+  "devDependencies": {
+    "@sentry/webpack-plugin": "^1.15.0",
+    "@types/ffi-napi": "^2.4.3",
+    "@types/lodash": "^4.14.168",
+    "@types/ref-napi": "^1.4.1",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "babel-eslint": "^10.1.0",
+    "electron": "^11.4.3",
+    "electron-download": "^4.1.1",
+    "enigmavirtualbox": "^0.9.10",
+    "eslint": "^7.23.0",
+    "eslint-config-alloy": "^3.10.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.0.0",
+    "generate-evb": "^1.0.3",
+    "prettier": "^2.2.1",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "typescript": "~4.1.5",
+    "vue-cli-plugin-electron-builder": "~2.0.0-rc.6"
+  },
+  "iohook": {
+    "targets": [
+      "electron-85"
+    ],
+    "platforms": [
+      "win32"
+    ],
+    "arches": [
+      "x64"
+    ]
+  }
+}

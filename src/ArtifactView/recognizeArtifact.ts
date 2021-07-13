@@ -1,0 +1,187 @@
+import { ocr, SplitResults } from './imageProcess'
+import { Artifact, ArtifactParam } from '@/typings/Artifact'
+import { ArtifactNames, ArtifactParamTypes, ArtifactSubParamTypes } from '@/typings/ArtifactMap'
+import { detectStars, textCNEN, textNumber, textBestmatch, findLowConfidence } from './postRecognize'
+
+const ocrCorrectionMap = [
+    ['ATK', '%'],
+    ['HP', 'DEF'],
+    ['Healing Bonus', 'Elemental Mastery'],
+    ['CRIT DMG', 'CRIT RATE'],
+    ['GEO DAMAGE BONUS', 'ANEMO DAMAGE BONUS'],
+    ['PYRO DAMAGE BONUS', 'HYDRO DAMAGE BONUS'],
+    ['ELECTRO DAMAGE BONUS', 'CRYO DAMAGE BONUS'],
+    ['Thundersoother', 'Pale'],
+    ['Energy Recharge', 'Survivor of Catastrophe'],
+]
+
+export async function recognizeArtifact(ret: SplitResults): Promise<[Artifact, string[], any]> {
+    const potentialErrors: string[] = []
+    /* OCR */
+    const ocrres = await ocr(ret)
+
+    /* 星数 */
+    const stars = detectStars(ret.color.canvas)
+
+    /* 标题 */
+    if (!ocrres.title || !ocrres.title.text) {
+        throw new Error("Title cant't be empty")
+    }
+    let name = textCNEN(ocrres.title.text)
+
+    for (const i of ocrCorrectionMap) {
+        name = name.replace(i[0], i[1])
+    }
+
+    if (!ArtifactNames.includes(name)) {
+        name = textBestmatch(name, ArtifactNames)
+    }
+
+    /* 等级 */
+    if (!ocrres.level || !ocrres.level.text) {
+        throw new Error("Level cant't be empty")
+    }
+    let level = Number(
+        textNumber(
+            ocrres.level.text
+                .toLowerCase()
+                .replace(/o/g, '0')
+                .replace(/古/g, '0')
+                .replace(/土/g, '1')
+                .replace(/吉/g, '10'),
+        ),
+    )
+    level = level > 20 ? 20 : level
+
+    /* 主词条 */
+    if (!ocrres.main || !ocrres.main.text) {
+        throw new Error("Main cant't be empty")
+    }
+    const [main, maybeError] = recognizeParams(ocrres.main.text.replace(/\s/g, ''), true)
+    if (maybeError) {
+        potentialErrors.push(maybeError)
+    }
+    /* 副词条 */
+    if (!ocrres.sub || !ocrres.sub.text) {
+        throw new Error("Sub cant't be empty")
+    }
+    const subTextArray = santizeParamsArray(
+        ocrres.sub.text.split('\n').filter((e: string) => {
+            return e.trim() !== ''
+        }),
+    )
+    const sub = []
+    try {
+        for (const i of subTextArray) {
+            const [subData, maybeError] = recognizeParams(i)
+            sub.push(subData)
+            if (maybeError) {
+                potentialErrors.push(maybeError)
+            }
+        }
+    } catch (e) {
+        console.log(e)
+    }
+
+    /* 副词条低置信度检查 */
+    potentialErrors.push(...findLowConfidence(ocrres.sub, 80, true))
+
+    /* 主词条低置信度检查 */
+    potentialErrors.push(...findLowConfidence(ocrres.main, 80, true))
+
+    return [
+        {
+            id: Date.now(),
+            name,
+            stars,
+            level,
+            user: '',
+            main,
+            sub,
+        },
+        potentialErrors,
+        ocrres,
+    ]
+}
+/**
+ * 对副词条数组可能出现加号丢失的情况进行预处理
+ * 若本行有加号，则本行及之前所有行都合法
+ * 若本行无加号，则暂不处理，等待后续判断
+ */
+function santizeParamsArray(input: string[]): string[] {
+    const array = [...input] // clone it
+    const result: Set<string> = new Set()
+    for (let i = 0; i < array.length; i++) {
+        array[i] = array[i].replace(/十/g, '+').replace(/\s/g, '')
+        if (array[i].includes('+')) {
+            for (let j = 0; j <= i; j++) {
+                result.add(array[j])
+            }
+        }
+    }
+    return [...result]
+}
+function recognizeParams(text: string, main = false): [ArtifactParam, string | null] {
+    let newtext = text
+    for (const i of ocrCorrectionMap) {
+        newtext = newtext.replace(i[0], i[1])
+    }
+
+    let maybeError = null
+    const rawName = textCNEN(newtext)
+    let value = textNumber(newtext)
+    const toCompare = main ? ArtifactParamTypes : ArtifactSubParamTypes
+    const name = textBestmatch(rawName, toCompare)
+
+    /*
+     * PaddleOCR会将逗号(,)识别成点(.)
+     * 并且可能把百分号识别为数字
+     * 此处对点后3位及以上的把点去掉
+     * 两位的把最后一位去掉
+     */
+    value = value.replace(/\.\./g, '.')
+    const [, b] = value.split('.')
+    if (b && b.length >= 3) {
+        value = value.replace(/\./g, '')
+    }
+    if (b && b.length === 2) {
+        value = value.substr(0, value.length - 1)
+    }
+
+    /*
+     * 词条属性的简单区间处理
+     *
+     * 百分比数字按分析通常不超过主70%副50%；且应该>1%
+     * 固定数字按分析通常不超过主6000副2000
+     * 数据来源：https://wiki.biligame.com/ys/圣遗物属性
+     *
+     * 若出现此类情形，一般直接认为是识别错误且是多识别一位数字
+     * 因此直接将第一位数字去除，并加入到疑似错误列表中
+     */
+    if (value.includes('.')) {
+        const uplimit = main ? 70 : 50
+        const numval = Number(value)
+        value += '%'
+        if (numval > uplimit) {
+            console.log('检测到异常固定百分比', value, '已修改为', value.substr(1))
+            value = value.substr(1)
+            maybeError = value
+        } else if (numval < 1) {
+            maybeError = value
+        }
+    } else {
+        const uplimit = main ? 6000 : 2000
+        if (Number(value) > uplimit) {
+            console.log('检测到异常固定数字', value, '已修改为', value.substr(1))
+            value = value.substr(1)
+            maybeError = value
+        }
+    }
+    return [
+        {
+            name,
+            value,
+        },
+        maybeError,
+    ]
+}
