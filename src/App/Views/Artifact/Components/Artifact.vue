@@ -69,8 +69,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .artifact {
-    width: 200px;
-    height: 190px;
+    width: 280px;
+    height: 260px;
     position: relative;
     margin: 8px;
     display: inline-block;
