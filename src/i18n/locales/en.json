@@ -121,6 +121,5 @@
     "已识别 %1 个": "%1 scanned",
     "该版本暂不支持自动更新": "Auto upgrade is not supported in this wersion.",
     "请下载并安装ViGEm驱动 (https://vigem.org/) 以使用手柄模拟功能。": "Please download and install the ViGem Driver (https://vigem.org/)  to enable joystick simulation.",
-    "关闭": "Close",
-    "圣遗物" : "Choose Artifacts"
+    "关闭": "Close"
 }
