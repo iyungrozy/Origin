@@ -4,9 +4,7 @@
 export const ArtifactParamTypes = [
     'HP',
     'ATK',
-    'ATK %',
     'DEF',
-    'DEF %',
     'Elemental Mastery',
     'Energy Recharge',
     'Healing Bonus',
@@ -24,8 +22,6 @@ export const ArtifactParamTypes = [
 export const ArtifactSubParamTypes = [
     'HP',
     'ATK',
-    'ATK %',
-    'DEF%',
     'DEF',
     'ElementaL Mastery',
     'Energy Recharge',
@@ -45,7 +41,7 @@ export const ArtifactNames = [
     'Mask of Solitude Basalt',
     'Icebreaker',
     'Snowswept Memory',
-    'Icebreaker`s Resolve',
+    'Icebreakers Resolve',
     'Frozen Homelands Demise',
     'Frost-Weaved Dignity',
     'Broken Rime Echo',
