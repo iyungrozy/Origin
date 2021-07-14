@@ -63,7 +63,7 @@ export default defineComponent({
     <el-dialog :title="title" width="400px" :model-value="show" @update:model-value="$emit('update:show', $event)">
         <article class="artiface-edit-panel">
             <div class="title">
-                <el-select v-model="artifact.name" class="title-select" filterable size="small" placeholder="Choose Artifacts">
+                <el-select v-model="artifact.name" class="title-select" filterable size="small" placeholder="__('圣遗物')">
                     <el-option v-for="(i, a) in ArtifactNames" :key="a" :value="i" :label="i"></el-option>
                 </el-select>
             </div>
