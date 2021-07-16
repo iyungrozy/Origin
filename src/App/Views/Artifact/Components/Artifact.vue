@@ -42,8 +42,8 @@ export default defineComponent({
             <div class="level">+{{ artifact.level }}</div>
             <el-rate class="stars" :modelValue="artifact.stars" disabled />
             <div class="main">
-                <div class="name">{{ artifact.main.name }}</div>
-                <div class="value">{{ artifact.main.value }}</div>
+                <div class="name">{{ __('artifact.main.name') }}</div>
+                <div class="value">{{ __('artifact.main.value') }}</div>
             </div>
         </div>
         <ul class="sub-part">
@@ -69,8 +69,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .artifact {
-    width: 280px;
-    height: 260px;
+    width: 200px;
+    height: 190px;
     position: relative;
     margin: 8px;
     display: inline-block;

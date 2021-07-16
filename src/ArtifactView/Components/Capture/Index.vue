@@ -111,8 +111,8 @@ export default {
 .overlay-user {
     left: 0;
     right: 0;
-    bottom: 6.5%;
-    height: 4.5%;
+    bottom: 9.5%;
+    height: 6.5%;
     border-top: 2px solid;
     border-bottom: 2px solid;
     section.overlay-user-in {
