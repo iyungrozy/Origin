@@ -16,7 +16,7 @@ export interface ArtifactParam {
     value: string
 }
 /**
- * Artifact Data Structure
+ * 圣遗物数据结构
  */
 export interface Artifact {
     /**

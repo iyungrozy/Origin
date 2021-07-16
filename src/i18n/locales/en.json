@@ -82,7 +82,7 @@
     "打开自动切换器": "Open auto switcher",
     "开启单击识别": "Enable recognize-on-click",
     "关闭单击识别": "Disable recognize-on-click",
-    "请以窗口模式打开游戏背包圣遗物界面， 将本窗口拖动至游戏上方并调节大小，使圣遗物每项属性恰好位于对应框内。完成调整后，请点击下方按钮或者使用热键（~）开始识别。": "Please open Genshin in window mode and open the artifact page, drag and resize this window to where each attribute in the right box. Then use the button below or hotkey (~) to start.",
+    "请以窗口模式打开游戏背包圣遗物界面， 将本窗口拖动至游戏上方并调节大小，使圣遗物每项属性恰好位于对应框内。完成调整后，请点击下方按钮或者使用热键（~）开始识别。": "Open Bag Artifact in Windowed Mode, drag and resize this window to right box. use the button below or hotkey (~) to START.",
     "开始": "Start",
     "识别错了？点此反馈": "Wrong answer? Click here to feedback",
     "识别中": "Recognizing",
@@ -121,8 +121,5 @@
     "已识别 %1 个": "%1 scanned",
     "该版本暂不支持自动更新": "Auto upgrade is not supported in this wersion.",
     "请下载并安装ViGEm驱动 (https://vigem.org/) 以使用手柄模拟功能。": "Please download and install the ViGem Driver (https://vigem.org/)  to enable joystick simulation.",
-    "关闭": "Close",
-    "磐陀裂生之花" : "Flower of Creviced Cliff",
-    "嵯峨群峰之翼" : "Feather of Jagged Peaks"
-    
+    "关闭": "Close"
 }

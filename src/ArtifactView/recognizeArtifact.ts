@@ -4,19 +4,15 @@ import { ArtifactNames, ArtifactParamTypes, ArtifactSubParamTypes } from '@/typi
 import { detectStars, textCNEN, textNumber, textBestmatch, findLowConfidence } from './postRecognize'
 
 const ocrCorrectionMap = [
-    ['莉力', '攻击力'],
-    ['医力', '攻击力'],
-    ['鬼已装备', '魈已装备'],
-    ['魁已装备', '魈已装备'],
-    ['宗室之邻', '宗室之翎'],
-    ['宗室之领', '宗室之翎'],
-    ['生花', '生之花'],
-    ['角斗士的耐醉', '角斗士的酣醉'],
-    ['角斗士的希翼', '角斗士的希冀'],
-    ['星罗圭壁之暑', '星罗圭璧之晷'],
-    ['宗室银瓷', '宗室银瓮'],
-    ['雷鸟的冷阀', '雷鸟的怜悯'],
-    ['雷灾的子遗', '雷灾的孑遗'],
+    ['ATK', '%'],
+    ['HP', 'DEF'],
+    ['Healing Bonus', 'Elemental Mastery'],
+    ['CRIT DMG', 'CRIT RATE'],
+    ['GEO DAMAGE BONUS', 'ANEMO DAMAGE BONUS'],
+    ['PYRO DAMAGE BONUS', 'HYDRO DAMAGE BONUS'],
+    ['ELECTRO DAMAGE BONUS', 'CRYO DAMAGE BONUS'],
+    ['Thundersoother', 'Pale'],
+    ['Energy Recharge', 'Survivor of Catastrophe'],
 ]
 
 export async function recognizeArtifact(ret: SplitResults): Promise<[Artifact, string[], any]> {
