@@ -37,7 +37,7 @@ export default defineComponent({
         <div class="main-part" :class="`star${artifact.stars}`">
             <div class="image" :style="{ backgroundImage: getImg(artifact.name) }"></div>
             <div class="name">
-                {{ artifact.name.split('_').join(' ') }}
+                {{ artifact.name }}
             </div>
             <div class="level">+{{ artifact.level }}</div>
             <el-rate class="stars" :modelValue="artifact.stars" disabled />
